@@ -6,7 +6,6 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   standalone: true,
   imports: [RouterLink, RouterLinkActive],
   templateUrl: './top-nav.html',
-  styleUrls: ['./top-nav.css'],
-
+  styleUrl: './top-nav.css',
 })
 export class TopNavComponent {}

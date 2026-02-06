@@ -6,7 +6,7 @@ import { LayoutComponent } from './layout/layout';
   standalone: true,
   imports: [LayoutComponent],
   templateUrl: './app.html',
-  styleUrls: ['./app.css'],   
+  styleUrl: './app.css',
 })
 export class App {
   protected readonly title = signal('error-logging-service-frontend-mvp');

@@ -1,2 +1,25 @@
-<h2>Server Status</h2>
-<p>MVP placeholder.</p>
+<div class="header">
+  <h1>Server Status</h1>
+  <button class="tool-button" (click)="setAllOnline()">Set all Online</button>
+</div>
+
+<div class="groups">
+  <div class="group" *ngFor="let g of groups">
+    <div class="group-title">{{ g.label }}</div>
+
+    <div class="results">
+      <div class="row" *ngFor="let t of g.targets">
+        <div class="name">{{ t.name }}</div>
+
+        <div
+          class="status"
+          [class.status-ok]="t.status === 'Online'"
+          [class.status-bad]="t.status === 'Offline'"
+          [class.status-unknown]="t.status === 'Unknown'"
+        >
+          {{ t.status }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

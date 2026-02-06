@@ -1,0 +1,26 @@
+.groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 12px;
+}
+
+.group {
+  background: var(--panel-inner);
+  border: 1px solid var(--panel-inner-border);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.group-title {
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+/* Make results sit nicely inside group */
+.results {
+  margin-top: 0;
+  border-radius: 8px;
+}
+
+.container { overflow: auto; }

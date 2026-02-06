@@ -2,7 +2,7 @@ export type MachineStatus = 'Online' | 'Offline' | 'Unknown';
 
 export interface Target {
   name: string;
-  status: MachineStatus; // MVP: always 'Online'
+  status: MachineStatus;
 }
 
 export interface Group {
