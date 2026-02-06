@@ -1,2 +1,57 @@
-<h2>Logs</h2>
-<p>MVP placeholder.</p>
+<!-- logs.page.html -->
+
+<div class="header">
+  <h1>Logs</h1>
+
+  <div class="actions">
+    <button class="tool-button" (click)="loadErrors()" [disabled]="loading">
+      {{ loading ? 'Loading...' : 'Load errors' }}
+    </button>
+
+    <button class="tool-button" (click)="createPdf()">
+      Create PDF
+    </button>
+  </div>
+</div>
+
+<div class="layout">
+  <!-- LEFT WINDOW (Log list) -->
+  <div class="left-window">
+    <div class="muted" *ngIf="message">{{ message }}</div>
+
+    <div class="results" *ngIf="errors.length">
+      <div class="rows-scroll">
+        <div
+          class="row"
+          *ngFor="let e of errors; let i = index"
+          [class.row-alt]="i % 2 === 1"
+        >
+          <div class="name">
+            #{{ e.id }} — {{ e.machine }} — {{ e.severity }}
+            <div class="muted">{{ e.created_at }}</div>
+            <div>{{ e.message }}</div>
+          </div>
+
+          <div
+            class="status"
+            [class.status-ok]="e.severity === 'INFO'"
+            [class.status-unknown]="e.severity === 'WARN'"
+            [class.status-bad]="e.severity === 'ERROR' || e.severity === 'CRITICAL'"
+          >
+            {{ e.severity }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="muted" *ngIf="!errors.length && !message">
+      Click “Load errors” to fetch the latest entries.
+    </div>
+  </div>
+
+  <!-- RIGHT WINDOW (Details placeholder) -->
+  <div class="right-window">
+    <h2 class="side-title">Details</h2>
+    <div class="muted">MVP placeholder (select a log later)</div>
+  </div>
+</div>

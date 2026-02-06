@@ -1,3 +1,4 @@
+/* Top header area (optional, but matches theme) */
 .topbar {
   display: flex;
   align-items: center;
@@ -5,36 +6,62 @@
   gap: 16px;
 
   padding: 14px 16px;
-  border-bottom: 1px solid #e5e5e5;
-  background: #ffffff;
+  border-bottom: 1px solid var(--panel-border);
+  background: var(--panel);
+  color: var(--text);
 }
 
+/* If you use this */
 .brand .title {
   font-size: 16px;
   font-weight: 700;
+  color: var(--accent);
 }
 
 .brand .subtitle {
   font-size: 12px;
-  opacity: 0.7;
+  opacity: 0.8;
+  color: var(--muted);
 }
 
+/* Tabs container */
 .tabs {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
 }
 
+/* Tab button */
 .tab {
   text-decoration: none;
-  color: inherit;
+  color: var(--text);
 
   padding: 8px 12px;
-  border: 1px solid #d8d8d8;
-  border-radius: 10px;
-  background: #fff;
+  border: 1px solid var(--panel-inner-border);
+  border-radius: 999px;          /* pill style like your original */
+  background: var(--panel-inner);
   font-weight: 600;
+  font-size: 13px;
+  opacity: 0.85;
+
+  transition: opacity 0.15s, border-color 0.15s, background-color 0.15s, box-shadow 0.15s;
 }
 
+.tab:hover {
+  opacity: 1;
+  border-color: var(--btn-hover);
+}
+
+/* Active tab */
 .tab.active {
-  border-color: #222;
+  background: var(--btn);
+  border-color: var(--btn-hover);
+  opacity: 1;
+  box-shadow: 0 0 8px var(--btn-glow);
+}
+
+/* Keyboard focus (nice touch) */
+.tab:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(45, 127, 204, 0.5);
 }

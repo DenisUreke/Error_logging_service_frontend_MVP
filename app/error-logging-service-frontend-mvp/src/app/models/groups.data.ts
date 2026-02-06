@@ -1,58 +1,58 @@
 import { Group } from '../models/group.models';
 
-const online = (name: string) => ({ name, status: 'Online' as const });
+const offline = (name: string) => ({ name, status: 'Offline' as const });
 
 export const GROUPS: Group[] = [
   {
     key: 'Saw',
     label: 'Saw',
-    targets: [online('Saw 1'), online('Saw 2'), online('Texo Sawbuffer')],
+    targets: [offline('Saw 1'), offline('Saw 2'), offline('Texo Sawbuffer')],
   },
   {
     key: 'Edgebanding',
     label: 'Edgebanding',
-    targets: [online('IMA FLV'), online('IMA EB1'), online('Biesse EB2'), online('Stemas 4SPL')],
+    targets: [offline('IMA FLV'), offline('IMA EB1'), offline('Biesse EB2'), offline('Stemas 4SPL')],
   },
   {
     key: 'Painting',
     label: 'Painting',
     targets: [
-      online('CEFLA 3D Soft Roller'),
-      online('CEFLA UVS 1'),
-      online('CEFLA UVS 2'),
-      online('CEFLA UVS 3'),
+      offline('CEFLA 3D Soft Roller'),
+      offline('CEFLA UVS 1'),
+      offline('CEFLA UVS 2'),
+      offline('CEFLA UVS 3'),
     ],
   },
   {
     key: 'Drill',
     label: 'Drill',
-    targets: [online('Biesse DRL2')],
+    targets: [offline('Biesse DRL2')],
   },
   {
     key: 'Logistics',
     label: 'Logistics',
     targets: [
-      online('Gebhardt FW'),
-      online('Gebhardt IMS'),
-      online('Gebhardt BOX'),
-      online('Gebhardt PALL'),
-      online('Max AGV'),
-      online('ABB Accessory'),
-      online('Amitec RMW'),
+      offline('Gebhardt FW'),
+      offline('Gebhardt IMS'),
+      offline('Gebhardt BOX'),
+      offline('Gebhardt PALL'),
+      offline('Max AGV'),
+      offline('ABB Accessory'),
+      offline('Amitec RMW'),
     ],
   },
   {
     key: 'Assembly',
     label: 'Assembly',
     targets: [
-      online('Top Drilling'),
-      online('Afry FB'),
-      online('Afry IMSD'),
-      online('TecnoLogica'),
-      online('Evomatic Box Collection'),
-      online('EvertJohanson ASMB'),
-      online('EvertJohanson Sorter'),
-      online('MSQ'),
+      offline('Top Drilling'),
+      offline('Afry FB'),
+      offline('Afry IMSD'),
+      offline('TecnoLogica'),
+      offline('Evomatic Box Collection'),
+      offline('EvertJohanson ASMB'),
+      offline('EvertJohanson Sorter'),
+      offline('MSQ'),
     ],
   },
 ];

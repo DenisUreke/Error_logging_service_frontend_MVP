@@ -1,25 +1,29 @@
-<div class="header">
-  <h1>Server Status</h1>
-  <button class="tool-button" (click)="setAllOnline()">Set all Online</button>
-</div>
+<div class="server-status">
+  <button class="tool-button" (click)="setAllOnline()">Check Servers</button>
 
-<div class="groups">
-  <div class="group" *ngFor="let g of groups">
-    <div class="group-title">{{ g.label }}</div>
+  <div class="server-status__grid">
+    <section class="server-group" *ngFor="let g of groups">
+      <header class="server-group__header">
+        <h3 class="server-group__title">{{ g.label }}</h3>
+        <div class="server-group__meta">{{ g.targets.length }} servers</div>
+      </header>
 
-    <div class="results">
-      <div class="row" *ngFor="let t of g.targets">
-        <div class="name">{{ t.name }}</div>
+      <div class="server-list">
+        <div class="server-row" *ngFor="let t of g.targets">
+          <div class="server-name">{{ t.name }}</div>
 
-        <div
-          class="status"
-          [class.status-ok]="t.status === 'Online'"
-          [class.status-bad]="t.status === 'Offline'"
-          [class.status-unknown]="t.status === 'Unknown'"
-        >
-          {{ t.status }}
+          <div
+            class="server-status-badge"
+            [ngClass]="{
+              'server-status-badge--ok': t.status === 'Online',
+              'server-status-badge--bad': t.status === 'Offline',
+              'server-status-badge--unknown': !t.status || t.status === 'Unknown'
+            }"
+          >
+            {{ (t.status || 'Unknown') }}
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   </div>
 </div>

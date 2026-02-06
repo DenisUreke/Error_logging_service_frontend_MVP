@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { GROUPS } from '../../models/groups.data'; 
+import { GROUPS } from '../../models/groups.data';
 import { Group } from '../../models/group.models';
 
 @Component({
@@ -8,8 +8,9 @@ import { Group } from '../../models/group.models';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './server-status.page.html',
-  styleUrl: './server-status.page.css',
+  styleUrls: ['./server-status.page.css'],
 })
+
 export class ServerStatusPage {
   groups: Group[] = structuredClone(GROUPS);
 

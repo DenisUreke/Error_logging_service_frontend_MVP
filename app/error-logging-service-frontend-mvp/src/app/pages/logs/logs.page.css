@@ -1,0 +1,126 @@
+/* Make sure the header + layout don't cause page scrolling */
+:host {
+  display: block;
+  height: 100%;
+}
+
+/* If this page is inside a full-height app shell, this locks it nicely */
+.layout {
+  height: calc(100vh - 140px); /* adjust if your header/tabs take more/less space */
+  overflow: hidden;           /* prevents page scroll */
+}
+
+/* Left side becomes a scroll container */
+.left-window {
+  display: flex;
+  flex-direction: column;
+  min-height: 0; /* critical for scroll inside grid/flex layouts */
+}
+
+/* The list area scrolls instead of the whole page */
+.rows-scroll {
+  margin-top: 10px;
+  overflow: auto;
+  min-height: 0;
+  padding-right: 4px; /* avoids scrollbar overlaying content */
+}
+
+/* Optional: slightly nicer scrollbar (works in Chromium/Edge) */
+.rows-scroll::-webkit-scrollbar {
+  width: 10px;
+}
+.rows-scroll::-webkit-scrollbar-thumb {
+  background: var(--panel-border);
+  border-radius: 999px;
+}
+
+/* Results container: remove "table" look, keep it simple */
+.results {
+  border: 1px solid var(--panel-border);
+  border-radius: 8px;
+  background: transparent;
+  overflow: hidden;
+}
+
+/* Each row becomes a card-like block */
+.row {
+  display: grid;
+  grid-template-columns: 1fr 120px;
+  gap: 10px;
+  padding: 12px;
+  border-top: 1px solid var(--panel-inner-border);
+
+  background: var(--panel-inner);
+}
+
+.row:first-child { border-top: 0; }
+
+/* Alternate background: darker than panel-inner */
+.row-alt {
+  background: #141414; /* "black-ish" alternate */
+}
+
+/* Tighten text styling a bit */
+.name {
+  font-weight: 600;
+}
+.name .muted {
+  font-weight: 400;
+}
+
+/* Status pill instead of plain right text */
+.status {
+  justify-self: end;
+  align-self: start;
+
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: 0.3px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--panel-inner-border);
+  background: rgba(255,255,255,0.03);
+  text-transform: uppercase;
+  text-align: right;
+}
+
+.status-unknown { opacity: 0.75; }
+.status-ok { color: var(--ok); border-color: rgba(46, 204, 113, 0.35); }
+.status-bad { color: var(--bad); border-color: rgba(255, 107, 107, 0.35); }
+
+/* Buttons (theme) — if not already global, keep here */
+.tool-button {
+  background-color: var(--btn);
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s, box-shadow 0.2s;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  box-shadow: 0 0 5px var(--btn-glow);
+}
+
+.tool-button:hover {
+  background-color: var(--btn-hover);
+  box-shadow: 0 0 10px var(--btn-glow-hover);
+}
+
+.tool-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(45, 127, 204, 0.5);
+}
+
+.tool-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1.4fr 0.9fr; /* left logs, right details */
+  gap: 12px;
+}
+

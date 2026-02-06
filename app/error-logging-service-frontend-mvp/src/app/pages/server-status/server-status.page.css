@@ -1,26 +1,119 @@
-.groups {
+/* container for all groups */
+.server-status {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 8px;
+  padding: 18px;
+  color: var(--text);
+}
+
+/* grid of group boxes */
+.server-status__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
 }
 
-.group {
+@media (max-width: 820px) {
+  .server-status__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* group card */
+.server-group {
   background: var(--panel-inner);
   border: 1px solid var(--panel-inner-border);
   border-radius: 8px;
-  padding: 12px;
+  overflow: hidden;
 }
 
-.group-title {
+/* group header */
+.server-group__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 12px 10px;
+  border-bottom: 1px solid var(--panel-inner-border);
+}
+
+.server-group__title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
   color: var(--accent);
+}
+
+.server-group__meta {
+  font-size: 12px;
+  color: var(--muted);
+  opacity: 0.85;
+}
+
+/* list of rows inside group */
+.server-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.server-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  padding: 10px 12px;
+  border-top: 1px solid var(--panel-inner-border);
+}
+.server-row:first-child { border-top: 0; }
+
+.server-name {
   font-weight: 600;
-  margin-bottom: 10px;
 }
 
-/* Make results sit nicely inside group */
-.results {
-  margin-top: 0;
-  border-radius: 8px;
+/* status “badge” */
+.server-status-badge {
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: 0.3px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--panel-inner-border);
+  background: rgba(255,255,255,0.03);
+  text-transform: uppercase;
+  text-align: right;
 }
 
-.container { overflow: auto; }
+.server-status-badge--unknown { opacity: 0.6; }
+.server-status-badge--ok { color: var(--ok); border-color: rgba(46, 204, 113, 0.35); }
+.server-status-badge--bad { color: var(--bad); border-color: rgba(255, 107, 107, 0.35); }
+
+.tool-button {
+  background-color: var(--btn);
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s, box-shadow 0.2s;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  box-shadow: 0 0 5px var(--btn-glow);
+}
+
+.tool-button:hover {
+  background-color: var(--btn-hover);
+  box-shadow: 0 0 10px var(--btn-glow-hover);
+}
+
+.tool-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.tool-button {
+  margin-bottom: 12px;
+}
+
+
