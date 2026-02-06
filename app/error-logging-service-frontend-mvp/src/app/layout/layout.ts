@@ -6,7 +6,8 @@ import { TopNavComponent } from '../shared/top-nav/top-nav';
   selector: 'app-layout',
   standalone: true,
   imports: [RouterOutlet, TopNavComponent],
-  templateUrl: './layout.component.html',
-  styleUrl: './layout.component.css',
+  templateUrl: './layout.html',
+  styleUrls: ['./layout.css'],
+
 })
 export class LayoutComponent {}
