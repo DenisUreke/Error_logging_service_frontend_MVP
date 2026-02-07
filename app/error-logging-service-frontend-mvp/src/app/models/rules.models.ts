@@ -22,13 +22,35 @@ export interface RuleRowOut {
   do_halo_ticket: boolean;
 }
 
-export interface RuleIn {
-  user_id: number;
-  service_id: number;
-  min_severity: Severity;
 
-  enabled: boolean;
-  do_email: boolean;
-  do_call: boolean;
-  do_halo_ticket: boolean;
+export interface UserIn {
+  first_name: string;
+  last_name: string;
+  role?: string;
+  email: string;
+  phone_number?: string;
 }
+
+export type RuleIn =
+  | {
+      user_id: number;
+      user?: never;
+      service_id: number;
+      min_severity: Severity;
+      enabled: boolean;
+      do_email: boolean;
+      do_call: boolean;
+      do_halo_ticket: boolean;
+    }
+  | {
+      user_id?: never;
+      user: UserIn;
+      service_id: number;
+      min_severity: Severity;
+      enabled: boolean;
+      do_email: boolean;
+      do_call: boolean;
+      do_halo_ticket: boolean;
+    };
+
+

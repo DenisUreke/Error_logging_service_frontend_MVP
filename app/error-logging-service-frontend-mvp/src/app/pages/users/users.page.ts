@@ -4,7 +4,9 @@ import { FormsModule } from '@angular/forms';
 
 import { ErrorApiService } from '../../services/error-api.service';
 import { ServiceOut, RuleRowOut } from '../../models/rules.models';
-import { UserOut } from '../../models/user.models';
+import type { RuleIn } from '../../models/rules.models';
+import type { Severity } from '../../models/error.models';
+import type { UserOut } from '../../models/user.models';
 
 @Component({
   selector: 'app-users-page',
@@ -26,15 +28,15 @@ export class UsersPage implements OnInit {
   rulesRows: RuleRowOut[] = [];
   selectedRow: RuleRowOut | null = null;
 
+  // all users in system (for "add user" dropdown)
   allUsers: UserOut[] = [];
   usersLoading = false;
   selectedUserIdToAdd: number | null = null;
 
-
   // service lookup: name -> id
   private serviceIdByName = new Map<string, number>();
 
-  // General rules (defaults for MVP) — we'll use later
+  // General rules (defaults for MVP) — we’ll use later
   general = {
     enabled: true,
     minSeverity: 'ERROR',
@@ -43,100 +45,20 @@ export class UsersPage implements OnInit {
     doEmail: false,
   };
 
-  constructor(private api: ErrorApiService) {
-    this.loadServices();
-  }
+  constructor(private api: ErrorApiService) {}
 
   ngOnInit() {
+    this.loadServices();
     this.loadAllUsers();
   }
 
+  /* -----------------------------
+   UI actions
+  ------------------------------ */
 
   selectUser(row: RuleRowOut) {
-    this.selectedRow = { ...row }; // copy so edits don’t instantly mutate list
-  }
-
-  private loadServices() {
-    this.loading = true;
-    this.message = 'Loading services...';
-
-    this.api.listServices().subscribe({
-      next: (rows) => {
-        this.services = rows ?? [];
-
-        const names = this.services
-          .map((s) => s.name)
-          .filter(Boolean)
-          .sort((a, b) => a.localeCompare(b));
-
-        this.machineOptions = ['Select machine...', ...names];
-        this.serviceIdByName = new Map(this.services.map((s) => [s.name, s.id]));
-
-        this.selectedMachine = this.machineOptions[0];
-        this.rulesRows = [];
-        this.selectedRow = null;
-
-        this.message = '';
-        this.loading = false;
-      },
-      error: (err) => {
-        this.message = 'Failed to load services. Is the backend running?';
-        this.loading = false;
-        console.error(err);
-      },
-    });
-  }
-
-  saveChanges() {
-    if (!this.selectedRow) {
-      this.message = 'Select a user first.';
-      return;
-    }
-
-    const service_id = this.selectedServiceId;
-    if (!service_id) {
-      this.message = 'Select a machine first.';
-      return;
-    }
-
-    this.saving = true;
-    this.message = 'Saving changes...';
-
-    const payload = {
-      user_id: this.selectedRow.user_id,
-      service_id,
-      min_severity: this.selectedRow.min_severity,
-
-      enabled: this.selectedRow.enabled,
-      do_email: this.selectedRow.do_email,
-      do_call: this.selectedRow.do_call,
-      do_halo_ticket: this.selectedRow.do_halo_ticket,
-    };
-
-    this.api.upsertRule(payload).subscribe({
-      next: () => {
-        this.saving = false;
-        this.message = 'Saved ✅';
-
-        // Refresh list so left table matches persisted state
-        this.api.listRulesByMachine(this.selectedMachine).subscribe({
-          next: (rows) => {
-            this.rulesRows = rows ?? [];
-
-            // keep selection on same user if possible
-            const updated = this.rulesRows.find(r => r.user_id === this.selectedRow?.user_id) ?? null;
-            if (updated) this.selectedRow = { ...updated };
-          },
-          error: (err) => console.error(err),
-        });
-      },
-      error: (err) => {
-        this.saving = false;
-        // FastAPI often returns { detail: "..." }
-        this.message = err?.error?.detail ? `Save failed: ${err.error.detail}` : 'Save failed.';
-        console.error(err);
-      },
-    });
+    // copy so edits don’t mutate list until saved
+    this.selectedRow = { ...row };
   }
 
   onMachineChanged() {
@@ -166,6 +88,55 @@ export class UsersPage implements OnInit {
     });
   }
 
+  saveChanges() {
+    if (!this.selectedRow) {
+      this.message = 'Select a user first.';
+      return;
+    }
+
+    const service_id = this.selectedServiceId;
+    if (!service_id) {
+      this.message = 'Select a machine first.';
+      return;
+    }
+
+    this.saving = true;
+    this.message = 'Saving changes...';
+
+    const payload: RuleIn = {
+      user_id: this.selectedRow.user_id,
+      service_id,
+      min_severity: this.selectedRow.min_severity,
+
+      enabled: this.selectedRow.enabled,
+      do_email: this.selectedRow.do_email,
+      do_call: this.selectedRow.do_call,
+      do_halo_ticket: this.selectedRow.do_halo_ticket,
+    };
+
+    this.api.upsertRule(payload).subscribe({
+      next: () => {
+        this.saving = false;
+        this.message = 'Saved ✅';
+
+        // Refresh list so left panel matches persisted state
+        this.api.listRulesByMachine(this.selectedMachine).subscribe({
+          next: (rows) => {
+            this.rulesRows = rows ?? [];
+            const updated = this.rulesRows.find(r => r.user_id === this.selectedRow?.user_id) ?? null;
+            if (updated) this.selectedRow = { ...updated };
+          },
+          error: (err) => console.error(err),
+        });
+      },
+      error: (err) => {
+        this.saving = false;
+        this.message = err?.error?.detail ? `Save failed: ${err.error.detail}` : 'Save failed.';
+        console.error(err);
+      },
+    });
+  }
+
   deleteSelectedRule() {
     if (!this.selectedRow) {
       this.message = 'Select a user first.';
@@ -188,7 +159,6 @@ export class UsersPage implements OnInit {
         this.saving = false;
         this.message = 'Rule deleted ✅';
 
-        // Refresh list
         this.api.listRulesByMachine(this.selectedMachine).subscribe({
           next: (rows) => {
             this.rulesRows = rows ?? [];
@@ -205,7 +175,86 @@ export class UsersPage implements OnInit {
     });
   }
 
-  loadAllUsers() {
+addSelectedUserToMachine() {
+  const userId = Number(this.selectedUserIdToAdd);
+  if (!userId) return;
+
+  if (this.selectedMachine === 'Select machine...') return;
+
+  const u = this.allUsers.find(x => x.id === userId);
+  if (!u) return;
+
+  // Prevent duplicates in UI list
+  const exists = this.rulesRows.some(r => r.user_id === u.id);
+  if (exists) {
+    this.selectedUserIdToAdd = null;
+    this.message = 'User already exists in this list.';
+    return;
+  }
+
+  const newRow: RuleRowOut = {
+    rule_id: 0,                 // 0 = not saved yet
+    user_id: u.id,
+    first_name: u.first_name,
+    last_name: u.last_name,
+    email: u.email,
+    phone_number: u.phone_number ?? '',
+
+    enabled: true,
+    min_severity: 'INFO',
+    do_halo_ticket: false,
+    do_call: false,
+    do_email: false,
+  };
+
+  // Add to top of list and auto-select
+  this.rulesRows = [newRow, ...this.rulesRows];
+  this.selectedRow = { ...newRow };
+
+  // Reset dropdown
+  this.selectedUserIdToAdd = null;
+
+  this.message = 'Added to list (not saved yet).';
+}
+
+
+  /* -----------------------------
+   Data loading
+  ------------------------------ */
+
+  private loadServices() {
+    this.loading = true;
+    this.message = 'Loading services...';
+
+    this.api.listServices().subscribe({
+      next: (rows) => {
+        this.services = rows ?? [];
+
+        const names = this.services
+          .map(s => s.name)
+          .filter(Boolean)
+          .sort((a, b) => a.localeCompare(b));
+
+        this.machineOptions = ['Select machine...', ...names];
+        this.serviceIdByName = new Map(this.services.map(s => [s.name, s.id]));
+
+        // reset machine view
+        this.selectedMachine = this.machineOptions[0];
+        this.rulesRows = [];
+        this.selectedRow = null;
+
+        this.message = '';
+        this.loading = false;
+      },
+      error: (err) => {
+        this.message = 'Failed to load services. Is the backend running?';
+        this.loading = false;
+        console.error(err);
+      },
+    });
+  }
+
+  private loadAllUsers() {
     this.usersLoading = true;
 
     this.api.listUsers().subscribe({
@@ -216,60 +265,23 @@ export class UsersPage implements OnInit {
       error: (err) => {
         this.usersLoading = false;
         console.error(err);
-        // optional: show message
-        // this.message = 'Failed to load users.';
       },
     });
   }
 
-  addSelectedUserToMachine() {
-    const userId = Number(this.selectedUserIdToAdd);
-    if (!userId) return;
+  /* -----------------------------
+   Helpers
+  ------------------------------ */
 
-    if (this.selectedMachine === 'Select machine...') return;
-
-    const u = this.allUsers.find(x => x.id === userId);
-    if (!u) return;
-
-    // Prevent duplicate user in the list
-    const exists = this.rulesRows?.some((r: any) => r.user_id === u.id);
-    if (exists) {
-      this.selectedUserIdToAdd = null;
-      return;
-    }
-
-    // Create a new "rule row" with defaults
-    const newRow: RuleRowOut = {
-      rule_id: 0, // placeholder until saved
-      user_id: u.id,
-      first_name: u.first_name,
-      last_name: u.last_name,
-      email: u.email,
-      phone_number: u.phone_number ?? '',
-
-      enabled: false,
-      min_severity: 'INFO',
-      do_halo_ticket: false,
-      do_call: false,
-      do_email: false,
-    };
-
-
-    this.rulesRows = [newRow, ...(this.rulesRows ?? [])];
-
-    // optionally auto-select the new row so you can edit it immediately
-    this.selectUser(newRow);
-
-    // reset dropdown
-    this.selectedUserIdToAdd = null;
-
-    // OPTIONAL next step: call backend to persist immediately
-    // this.api.createRuleForMachine(this.selectedMachine, newRow).subscribe(...)
-  }
-
-  // helper for later (save needs this)
   get selectedServiceId(): number | null {
     if (!this.selectedMachine || this.selectedMachine === 'Select machine...') return null;
     return this.serviceIdByName.get(this.selectedMachine) ?? null;
   }
+
+  // Useful for dropdown: hide users already assigned to this machine
+get availableUsers(): UserOut[] {
+  const assigned = new Set(this.rulesRows.map(r => r.user_id));
+  return (this.allUsers ?? []).filter(u => !assigned.has(u.id));
+}
+
 }

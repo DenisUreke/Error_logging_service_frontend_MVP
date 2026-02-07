@@ -13,14 +13,14 @@
                 <select class="select" [(ngModel)]="selectedUserIdToAdd"
                     [disabled]="selectedMachine === 'Select machine...' || usersLoading">
                     <option [ngValue]="null">Add user…</option>
-                    <option *ngFor="let u of allUsers" [ngValue]="u.id">
-                        {{ u.first_name }} {{ u.last_name }} ({{ u.role || '—' }})
+                    <option *ngFor="let u of availableUsers" [ngValue]="u.id">
+                        {{ u.first_name }} {{ u.last_name }} — {{ u.email }}
                     </option>
                 </select>
 
                 <button class="tool-button" (click)="addSelectedUserToMachine()"
-                    [disabled]="!selectedUserIdToAdd || selectedMachine === 'Select machine...' || usersLoading">
-                    Add
+                    [disabled]="!selectedUserIdToAdd || selectedMachine === 'Select machine...' || usersLoading || saving">
+                    {{ saving ? 'Working...' : 'Add' }}
                 </button>
             </div>
 
@@ -36,7 +36,8 @@
         <!-- 1: General rules (full width) -->
         <div class="panel panel-general">
             <div class="panel-title">
-                General rules ({{ selectedMachine }})
+                General rules
+                <span *ngIf="selectedMachine !== 'Select machine...'">({{ selectedMachine }})</span>
             </div>
 
             <div class="general-grid">
@@ -76,24 +77,30 @@
         <div class="panel panel-users">
             <div class="panel-title">Users</div>
 
-            <div class="muted" *ngIf="!rulesRows.length && selectedMachine === 'Select machine...'">
+            <!-- No machine selected -->
+            <div class="muted" *ngIf="selectedMachine === 'Select machine...'">
                 Select a machine to load users.
             </div>
 
-            <div class="muted" *ngIf="!rulesRows.length && selectedMachine !== 'Select machine...' && !loading">
-                <div class="muted" *ngIf="loading">
-                    Loading...
-                </div>
+            <!-- Loading -->
+            <div class="muted" *ngIf="selectedMachine !== 'Select machine...' && loading">
+                Loading...
+            </div>
 
+            <!-- Loaded, but empty -->
+            <div class="muted" *ngIf="selectedMachine !== 'Select machine...' && !loading && !rulesRows.length">
                 No users found for this machine.
             </div>
 
-
-            <!-- placeholder list area -->
+            <!-- List -->
             <div class="list-scroll" *ngIf="rulesRows.length">
                 <div class="user-row" *ngFor="let u of rulesRows" (click)="selectUser(u)"
                     [class.user-row--active]="selectedRow?.user_id === u.user_id">
-                    <div class="user-name">{{ u.first_name }} {{ u.last_name }}</div>
+                    <div class="user-name">
+                        {{ u.first_name }} {{ u.last_name }}
+                        <span class="unsaved" *ngIf="u.rule_id === 0">(unsaved)</span>
+                    </div>
+
                     <div class="muted">{{ u.email }}</div>
                     <div class="muted">{{ u.phone_number }}</div>
                 </div>
@@ -151,11 +158,13 @@
             </div>
 
             <div class="spacer"></div>
+
             <div class="editor-actions">
                 <button class="tool-button" (click)="saveChanges()"
                     [disabled]="!selectedRow || saving || selectedMachine === 'Select machine...'">
                     {{ saving ? 'Saving...' : 'Save Changes' }}
                 </button>
+
                 <button class="tool-button_delete" (click)="deleteSelectedRule()"
                     [disabled]="!selectedRow || saving || selectedMachine === 'Select machine...'">
                     {{ saving ? 'Deleting...' : 'Delete Rule' }}
@@ -163,7 +172,6 @@
             </div>
 
         </div>
-
 
     </div>
 </div>

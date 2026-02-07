@@ -38,8 +38,8 @@ export class ErrorApiService {
   }
 
   listUsers() {
-  return this.http.get<UserOut[]>(`${this.baseUrl}/users`);
-}
+    return this.http.get<UserOut[]>(`${this.baseUrl}/users`);
+  }
 
 
 

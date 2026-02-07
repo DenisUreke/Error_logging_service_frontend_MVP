@@ -8,10 +8,6 @@
     <button class="tool-button" (click)="loadErrors()" [disabled]="loading">
       {{ loading ? 'Loading...' : 'Load errors' }}
     </button>
-
-    <button class="tool-button" (click)="createPdf()">
-      Create PDF
-    </button>
   </div>
 
   <div class="actions-right">
@@ -69,6 +65,7 @@
 
     <!-- RIGHT WINDOW (Details) -->
     <div class="right-window">
+      <div class="spacer"></div>
       <pre class="details-pre">{{ detailsText }}</pre>
     </div>
   </div>
