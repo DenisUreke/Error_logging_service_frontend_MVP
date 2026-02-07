@@ -1,0 +1,283 @@
+.parent-container{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+:host {
+  display: block;
+  height: 100%;
+}
+
+.header {
+  padding: 0 0 12px 0;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+}
+
+.actions-left,
+.actions-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.actions-right {
+  margin-left: 48px; /* space between groups */
+}
+
+.layout {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 12px;
+  overflow: hidden;
+}
+
+.left-window,
+.right-window {
+  min-height: 0;
+  overflow: auto;
+  border: 1px solid var(--panel-border);
+  background: var(--panel);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.side-title {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+  color: var(--text);
+}
+
+.chart-card {
+  border: 1px solid var(--panel-inner-border);
+  background: var(--panel-inner);
+  border-radius: 8px;
+  padding: 14px;
+}
+
+.select {
+  background: var(--panel-inner);
+  color: var(--text);
+  border: 1px solid var(--panel-inner-border);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-weight: 600;
+}
+
+/* Reuse your button style if you already have it globally; otherwise keep this */
+.tool-button {
+  background-color: var(--btn);
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s, box-shadow 0.2s;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  box-shadow: 0 0 5px var(--btn-glow);
+}
+
+.tool-button:hover {
+  background-color: var(--btn-hover);
+  box-shadow: 0 0 10px var(--btn-glow-hover);
+}
+
+.muted {
+  color: var(--muted);
+  opacity: 0.85;
+}
+
+/* Pie chart */
+.pie-wrap {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  margin: 0 auto 12px auto;
+}
+
+.pie {
+  width: 100%;
+  height: 100%;
+  border-radius: 999px;
+  border: 1px solid var(--panel-border);
+  box-shadow: 0 0 12px rgba(96, 184, 255, 0.08);
+}
+
+.pie-center {
+  position: absolute;
+  inset: 22%;
+  border-radius: 999px;
+  background: var(--panel-inner);
+  border: 1px solid var(--panel-inner-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 10px;
+}
+
+.pie-center-title {
+  font-weight: 800;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.pie-center-sub {
+  margin-top: 4px;
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.legend {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.legend-row {
+  display: grid;
+  grid-template-columns: 14px 1fr auto;
+  align-items: center;
+  gap: 10px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+}
+
+.dot-ok { background: var(--ok); }
+.dot-warn { background: #f1c40f; }
+.dot-bad { background: var(--bad); }
+
+.val {
+  font-weight: 800;
+}
+
+/* Bars */
+.bars {
+  display: grid;
+  gap: 10px;
+}
+
+.bar-row {
+  display: grid;
+  grid-template-columns: 90px 1fr 50px;
+  align-items: center;
+  gap: 10px;
+}
+
+.bar-label {
+  font-weight: 700;
+}
+
+.bar-track {
+  height: 10px;
+  border-radius: 999px;
+  border: 1px solid var(--panel-inner-border);
+  background: rgba(255,255,255,0.04);
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--btn), var(--btn-hover));
+}
+
+.bar-val {
+  text-align: right;
+  font-weight: 800;
+}
+
+.hint {
+  margin-top: 12px;
+}
+
+.mini-columns {
+  margin-top: 16px;
+  border-top: 1px solid var(--panel-inner-border);
+  padding-top: 14px;
+}
+
+.mini-columns__title {
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 10px;
+  color: var(--text);
+  opacity: 0.95;
+}
+
+.mini-columns__chart {
+  height: 140px;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+  align-items: stretch;  /* <-- key change */
+}
+
+.mini-col {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.mini-col__bar {
+  width: 100%;
+  min-height: 6px;
+  border-radius: 8px;
+  border: 1px solid var(--panel-inner-border);
+}
+
+
+.mini-col__label {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.mini-col__bar { background: red !important; }
+
+.mini-title {
+  margin: 0 0 10px 0;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.sev-list {
+  display: grid;
+  gap: 8px;
+}
+
+.sev-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  padding: 10px 12px;
+  border: 1px solid var(--panel-inner-border);
+  border-radius: 8px;
+  background: rgba(255,255,255,0.03);
+}
+
+.sev-label {
+  font-weight: 800;
+  letter-spacing: 0.3px;
+}
+
+.sev-value {
+  font-weight: 900;
+  font-size: 14px;
+}

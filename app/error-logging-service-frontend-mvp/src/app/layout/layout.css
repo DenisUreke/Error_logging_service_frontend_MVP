@@ -1,7 +1,17 @@
 .app-shell {
-  min-height: 100vh;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* critical: stops shell from scrolling */
 }
 
-.page {
+app-top-nav {
+  flex: 0 0 auto; /* header height stays as-is */
+}
+
+.app-content {
+  flex: 1 1 auto;   /* takes remaining height */
+  min-height: 0;    /* critical for scrolling inside flex children */
+  overflow-y: auto; /* THIS is where scrolling happens */
   padding: 16px;
 }

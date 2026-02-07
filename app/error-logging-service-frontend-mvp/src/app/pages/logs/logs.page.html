@@ -1,9 +1,10 @@
 <!-- logs.page.html -->
 
-<div class="header">
-  <h1>Logs</h1>
+<div class="parent-container">
 
-  <div class="actions">
+  <div class="header">
+<div class="actions">
+  <div class="actions-left">
     <button class="tool-button" (click)="loadErrors()" [disabled]="loading">
       {{ loading ? 'Loading...' : 'Load errors' }}
     </button>
@@ -12,46 +13,64 @@
       Create PDF
     </button>
   </div>
+
+  <div class="actions-right">
+    <select class="select" [(ngModel)]="severityFilter">
+      <option value="ALL">All severities</option>
+      <option value="INFO">INFO</option>
+      <option value="WARN">WARN</option>
+      <option value="ERROR">ERROR</option>
+      <option value="CRITICAL">CRITICAL</option>
+    </select>
+
+    <select class="select" [(ngModel)]="machineFilter">
+      <option value="ALL">All machines</option>
+      <option *ngFor="let m of machineOptions" [value]="m">{{ m }}</option>
+    </select>
+  </div>
 </div>
 
-<div class="layout">
-  <!-- LEFT WINDOW (Log list) -->
-  <div class="left-window">
-    <div class="muted" *ngIf="message">{{ message }}</div>
+  </div>
 
-    <div class="results" *ngIf="errors.length">
-      <div class="rows-scroll">
-        <div
-          class="row"
-          *ngFor="let e of errors; let i = index"
-          [class.row-alt]="i % 2 === 1"
-        >
-          <div class="name">
-            #{{ e.id }} — {{ e.machine }} — {{ e.severity }}
-            <div class="muted">{{ e.created_at }}</div>
-            <div>{{ e.message }}</div>
-          </div>
+  <div class="layout">
+    <!-- LEFT WINDOW (Log list) -->
+    <div class="left-window">
+      <div class="muted" *ngIf="message">{{ message }}</div>
 
+      <div class="results" *ngIf="filteredErrors.length">
+        <div class="rows-scroll">
           <div
-            class="status"
-            [class.status-ok]="e.severity === 'INFO'"
-            [class.status-unknown]="e.severity === 'WARN'"
-            [class.status-bad]="e.severity === 'ERROR' || e.severity === 'CRITICAL'"
+            class="row"
+            *ngFor="let e of filteredErrors; let i = index"
+            [class.row-alt]="i % 2 === 1"
+            (click)="selectRow(e)"
           >
-            {{ e.severity }}
+            <div class="name">
+              #{{ e.id }} — {{ e.machine }} — {{ e.severity }}
+              <div class="muted">{{ e.created_at }}</div>
+              <div>{{ e.message }}</div>
+            </div>
+
+            <div
+              class="status"
+              [class.status-ok]="e.severity === 'INFO'"
+              [class.status-unknown]="e.severity === 'WARN'"
+              [class.status-bad]="e.severity === 'ERROR' || e.severity === 'CRITICAL'"
+            >
+              {{ e.severity }}
+            </div>
           </div>
         </div>
       </div>
+
+      <div class="muted" *ngIf="!filteredErrors.length && !message">
+      </div>
     </div>
 
-    <div class="muted" *ngIf="!errors.length && !message">
-      Click “Load errors” to fetch the latest entries.
+    <!-- RIGHT WINDOW (Details) -->
+    <div class="right-window">
+      <pre class="details-pre">{{ detailsText }}</pre>
     </div>
   </div>
 
-  <!-- RIGHT WINDOW (Details placeholder) -->
-  <div class="right-window">
-    <h2 class="side-title">Details</h2>
-    <div class="muted">MVP placeholder (select a log later)</div>
-  </div>
 </div>

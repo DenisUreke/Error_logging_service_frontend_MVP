@@ -9,6 +9,11 @@ export const GROUPS: Group[] = [
     targets: [offline('Saw 1'), offline('Saw 2'), offline('Texo Sawbuffer')],
   },
   {
+    key: 'Drill',
+    label: 'Drill',
+    targets: [offline('Biesse DRL2')],
+  },
+  {
     key: 'Edgebanding',
     label: 'Edgebanding',
     targets: [offline('IMA FLV'), offline('IMA EB1'), offline('Biesse EB2'), offline('Stemas 4SPL')],
@@ -22,11 +27,6 @@ export const GROUPS: Group[] = [
       offline('CEFLA UVS 2'),
       offline('CEFLA UVS 3'),
     ],
-  },
-  {
-    key: 'Drill',
-    label: 'Drill',
-    targets: [offline('Biesse DRL2')],
   },
   {
     key: 'Logistics',

@@ -1,3 +1,13 @@
+
+.parent-container{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+
 /* Make sure the header + layout don't cause page scrolling */
 :host {
   display: block;
@@ -6,24 +16,39 @@
 
 /* If this page is inside a full-height app shell, this locks it nicely */
 .layout {
-  height: calc(100vh - 140px); /* adjust if your header/tabs take more/less space */
-  overflow: hidden;           /* prevents page scroll */
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1.4fr 0.9fr;
+  gap: 12px;
+  overflow: hidden;
 }
+
 
 /* Left side becomes a scroll container */
 .left-window {
   display: flex;
   flex-direction: column;
-  min-height: 0; /* critical for scroll inside grid/flex layouts */
+  min-height: 0;      /* CRITICAL in grid/flex */
+  overflow: hidden;   /* prevent left-window itself from scrolling */
 }
+
 
 /* The list area scrolls instead of the whole page */
 .rows-scroll {
-  margin-top: 10px;
-  overflow: auto;
+  flex: 1 1 auto;
   min-height: 0;
-  padding-right: 4px; /* avoids scrollbar overlaying content */
+  overflow-y: auto;
+  margin-top: 10px;
+  padding-right: 4px;
 }
+
+
+.right-window {
+  min-height: 0;
+  overflow-y: auto;
+}
+
 
 /* Optional: slightly nicer scrollbar (works in Chromium/Edge) */
 .rows-scroll::-webkit-scrollbar {
@@ -40,7 +65,12 @@
   border-radius: 8px;
   background: transparent;
   overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
+
 
 /* Each row becomes a card-like block */
 .row {
@@ -118,9 +148,44 @@
   cursor: not-allowed;
 }
 
-.layout {
-  display: grid;
-  grid-template-columns: 1.4fr 0.9fr; /* left logs, right details */
+.details-pre {
+  margin: 0;
+  white-space: pre-wrap;      /* keeps line breaks, wraps long lines */
+  word-break: break-word;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 13px;
+  line-height: 1.4;
+
+  padding: 12px;
+  border: 1px solid var(--panel-border);
+  border-radius: 8px;
+  background: var(--panel-inner);
+  color: var(--text);
+}
+
+.select {
+  background: var(--panel-inner);
+  color: var(--text);
+  border: 1px solid var(--panel-inner-border);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-weight: 600;
+}
+
+.actions{
+  display: flex;
+  align-items: center;
+}
+
+.actions-left,
+.actions-right{
+  display: flex;
+  align-items: center;
   gap: 12px;
+}
+
+/* THIS controls the space between the groups */
+.actions-right{
+  margin-left: 600px;   /* adjust: 24px, 40px, 60px etc */
 }
 

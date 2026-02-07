@@ -20,6 +20,8 @@
 
 /* optional but recommended so the whole app matches */
 html, body {
+  height: 100%;
+  overflow: hidden; /* prevents browser scroll */
   margin: 0;
   padding: 0;
   background: var(--bg);
@@ -29,3 +31,38 @@ html, body {
 }
 
 * { box-sizing: border-box; }
+
+/* ===== Global scrollbar styling ===== */
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--btn) var(--panel-inner);
+}
+
+/* Chrome/Edge/Safari */
+*::-webkit-scrollbar {
+  width: 12px;
+  height: 12px; /* for horizontal scrollbars */
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--panel-inner);
+  border: 1px solid var(--panel-inner-border);
+  border-radius: 999px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--btn), var(--btn-hover));
+  border: 2px solid var(--panel-inner); /* creates a “gap” look */
+  border-radius: 999px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, var(--btn-hover), var(--btn));
+}
+
+*::-webkit-scrollbar-corner {
+  background: var(--panel-inner);
+}
+

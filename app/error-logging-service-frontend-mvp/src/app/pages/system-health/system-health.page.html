@@ -1,0 +1,124 @@
+<div class="parent-container">
+    <div class="header">
+        <div class="actions">
+            <div class="actions-left">
+                <button class="tool-button" (click)="createPdf()">
+                    Create PDF
+                </button>
+
+                <div class="muted" *ngIf="message">{{ message }}</div>
+            </div>
+
+            <div class="actions-right">
+                <select class="select" [(ngModel)]="selectedMachine" (ngModelChange)="onFiltersChanged()">
+                    <option *ngFor="let m of machineOptions" [value]="m">{{ m }}</option>
+                </select>
+
+                <select class="select" [(ngModel)]="selectedTime" (ngModelChange)="onFiltersChanged()">
+                    <option *ngFor="let t of timeOptions" [value]="t.value">{{ t.label }}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="layout">
+        <!-- LEFT WINDOW -->
+        <div class="left-window">
+            <h2 class="side-title">Availability breakdown</h2>
+
+            <div class="chart-card">
+                <div class="pie-wrap">
+                    <div class="pie" [style.background]="pieStyle"></div>
+                    <div class="pie-center">
+                        <div class="pie-center-title">{{ selectedMachine }}</div>
+                        <div class="pie-center-sub">{{ selectedTimeLabel }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="legend">
+                    <div class="legend-row">
+                        <span class="dot dot-ok"></span>
+                        <span class="label">Online</span>
+                        <span class="val">{{ pie.ok }}%</span>
+                    </div>
+                    <div class="legend-row">
+                        <span class="dot dot-warn"></span>
+                        <span class="label">Degraded</span>
+                        <span class="val">{{ pie.warn }}%</span>
+                    </div>
+                    <div class="legend-row">
+                        <span class="dot dot-bad"></span>
+                        <span class="label">Offline</span>
+                        <span class="val">{{ pie.bad }}%</span>
+                    </div>
+                </div>
+                <div class="mini-columns">
+                    <div class="mini-columns__title">Events per day</div>
+
+                    <div class="mini-columns__chart">
+                        <div class="mini-col" *ngFor="let c of columns">
+                            <div class="mini-col__bar" [style.height.%]="c.value"></div>
+                            <div class="mini-col__label">{{ c.label }}</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- RIGHT WINDOW -->
+        <div class="right-window">
+            <h2 class="side-title">Status trend</h2>
+
+            <div class="chart-card">
+                <h3 class="mini-title">Service health</h3>
+                <div class="bars">
+                    <div class="bar-row" *ngFor="let b of bars">
+                        <div class="bar-label">{{ b.label }}</div>
+                        <div class="bar-track">
+                            <div class="bar-fill" [style.width.%]="b.value"></div>
+                        </div>
+                        <div class="bar-val">{{ b.value }}%</div>
+                    </div>
+                </div>
+
+                <div class="muted hint">
+                    Distributed health
+                </div>
+            </div>
+
+            <div class="chart-card severity-card">
+                <h3 class="mini-title">Logs by severity</h3>
+
+                <div class="sev-list">
+                    <div class="sev-row" *ngFor="let s of severityCounts">
+                        <div class="sev-label">{{ s.label }}</div>
+                        <div class="sev-value">{{ s.value }}</div>
+                    </div>
+                </div>
+
+                <div class="muted hint">
+                    Count of log entries within the selected time range.
+                </div>
+            </div>
+
+            <div class="chart-card severity-card">
+                <h3 class="mini-title">Logs previous period</h3>
+
+                <div class="sev-list">
+                    <div class="sev-row" *ngFor="let s of severityCounts_2">
+                        <div class="sev-label">{{ s.label }}</div>
+                        <div class="sev-value">{{ s.value }}</div>
+                    </div>
+                </div>
+
+                <div class="muted hint">
+                    Count of log entries (history)
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
