@@ -23,7 +23,7 @@ export class LogsPage {
   constructor(private api: ErrorApiService, private cdr: ChangeDetectorRef) { }
 
   selected: ErrorOut | null = null;
-  detailsText = 'MVP placeholder (select a log row)';
+  detailsText = 'Select a log row to see details here.';
 
   private readonly mockDetails: string[] = [
     [

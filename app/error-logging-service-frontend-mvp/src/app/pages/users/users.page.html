@@ -5,18 +5,19 @@
         <div class="actions">
             <div class="actions-right">
                 <!-- Machine -->
-                <select class="select" [(ngModel)]="selectedMachine" (ngModelChange)="onMachineChanged()">
+                <select class="select" aria-label="Select machine" [(ngModel)]="selectedMachine"
+                    (ngModelChange)="onMachineChanged()">
                     <option *ngFor="let m of machineOptions" [value]="m">{{ m }}</option>
                 </select>
 
-                <!-- Add user -->
-                <select class="select" [(ngModel)]="selectedUserIdToAdd"
+                <select class="select" aria-label="Add user to machine" [(ngModel)]="selectedUserIdToAdd"
                     [disabled]="selectedMachine === 'Select machine...' || usersLoading">
                     <option [ngValue]="null">Add user…</option>
                     <option *ngFor="let u of availableUsers" [ngValue]="u.id">
                         {{ u.first_name }} {{ u.last_name }} — {{ u.email }}
                     </option>
                 </select>
+
 
                 <button class="tool-button" (click)="addSelectedUserToMachine()"
                     [disabled]="!selectedUserIdToAdd || selectedMachine === 'Select machine...' || usersLoading || saving">

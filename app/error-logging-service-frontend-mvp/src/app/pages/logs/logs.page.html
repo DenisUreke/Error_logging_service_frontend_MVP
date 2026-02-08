@@ -3,28 +3,29 @@
 <div class="parent-container">
 
   <div class="header">
-<div class="actions">
-  <div class="actions-left">
-    <button class="tool-button" (click)="loadErrors()" [disabled]="loading">
-      {{ loading ? 'Loading...' : 'Load errors' }}
-    </button>
-  </div>
+    <div class="actions">
+      <div class="actions-left">
+        <button class="tool-button" (click)="loadErrors()" [disabled]="loading">
+          {{ loading ? 'Loading...' : 'Load errors' }}
+        </button>
+      </div>
 
-  <div class="actions-right">
-    <select class="select" [(ngModel)]="severityFilter">
-      <option value="ALL">All severities</option>
-      <option value="INFO">INFO</option>
-      <option value="WARN">WARN</option>
-      <option value="ERROR">ERROR</option>
-      <option value="CRITICAL">CRITICAL</option>
-    </select>
+      <div class="actions-right">
+        <select class="select" aria-label="Severity filter" [(ngModel)]="severityFilter">
+          <option value="ALL">All severities</option>
+          <option value="INFO">INFO</option>
+          <option value="WARN">WARN</option>
+          <option value="ERROR">ERROR</option>
+          <option value="CRITICAL">CRITICAL</option>
+        </select>
 
-    <select class="select" [(ngModel)]="machineFilter">
-      <option value="ALL">All machines</option>
-      <option *ngFor="let m of machineOptions" [value]="m">{{ m }}</option>
-    </select>
-  </div>
-</div>
+        <select class="select" aria-label="Machine filter" [(ngModel)]="machineFilter">
+          <option value="ALL">All machines</option>
+          <option *ngFor="let m of machineOptions" [value]="m">{{ m }}</option>
+        </select>
+
+      </div>
+    </div>
 
   </div>
 
@@ -35,24 +36,16 @@
 
       <div class="results" *ngIf="filteredErrors.length">
         <div class="rows-scroll">
-          <div
-            class="row"
-            *ngFor="let e of filteredErrors; let i = index"
-            [class.row-alt]="i % 2 === 1"
-            (click)="selectRow(e)"
-          >
+          <div class="row" *ngFor="let e of filteredErrors; let i = index" [class.row-alt]="i % 2 === 1"
+            (click)="selectRow(e)">
             <div class="name">
               #{{ e.id }} — {{ e.machine }} — {{ e.severity }}
               <div class="muted">{{ e.created_at }}</div>
               <div>{{ e.message }}</div>
             </div>
 
-            <div
-              class="status"
-              [class.status-ok]="e.severity === 'INFO'"
-              [class.status-unknown]="e.severity === 'WARN'"
-              [class.status-bad]="e.severity === 'ERROR' || e.severity === 'CRITICAL'"
-            >
+            <div class="status" [class.status-ok]="e.severity === 'INFO'" [class.status-unknown]="e.severity === 'WARN'"
+              [class.status-bad]="e.severity === 'ERROR' || e.severity === 'CRITICAL'">
               {{ e.severity }}
             </div>
           </div>
