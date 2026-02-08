@@ -89,6 +89,28 @@ severityCounts_2 = [
     });
   }
 
+  createExcel() {
+  this.message = '';
+  this.cdr.detectChanges();
+
+  this.api.downloadHealthExcel().subscribe({
+    next: (blob) => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'system_health_report.xlsx';
+      a.click();
+      window.URL.revokeObjectURL(url);
+    },
+    error: (err) => {
+      this.message = 'Failed to generate Excel.';
+      this.cdr.detectChanges();
+      console.error(err);
+    },
+  });
+}
+
+
   onFiltersChanged() {
     this.refreshMock();
   }

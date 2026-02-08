@@ -41,6 +41,10 @@ export class ErrorApiService {
     return this.http.get<UserOut[]>(`${this.baseUrl}/users`);
   }
 
+   downloadHealthExcel(): Observable<Blob> {
+    return this.http.get(`${this.baseUrl}/report/health.xlsx`, { responseType: 'blob' });
+  }
+
 
 
 }

@@ -5,18 +5,24 @@
                 <button class="tool-button" (click)="createPdf()">
                     Create PDF
                 </button>
+                <button class="tool-button" (click)="createExcel()">
+                    Create Excel
+                </button>
 
                 <div class="muted" *ngIf="message">{{ message }}</div>
             </div>
 
             <div class="actions-right">
-                <select class="select" [(ngModel)]="selectedMachine" (ngModelChange)="onFiltersChanged()">
+                <select class="select" aria-label="Machine filter" [(ngModel)]="selectedMachine"
+                    (ngModelChange)="onFiltersChanged()">
                     <option *ngFor="let m of machineOptions" [value]="m">{{ m }}</option>
                 </select>
 
-                <select class="select" [(ngModel)]="selectedTime" (ngModelChange)="onFiltersChanged()">
+                <select class="select" aria-label="Time range filter" [(ngModel)]="selectedTime"
+                    (ngModelChange)="onFiltersChanged()">
                     <option *ngFor="let t of timeOptions" [value]="t.value">{{ t.label }}</option>
                 </select>
+
             </div>
         </div>
     </div>
