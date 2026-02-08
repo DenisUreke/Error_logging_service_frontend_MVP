@@ -62,6 +62,7 @@ severityCounts_2 = [
   { label: 'CRITICAL', value: 2 },
 ];
 
+timeline: { label: string; value: number }[] = [];
 
 
   constructor(private api: ErrorApiService, private cdr: ChangeDetectorRef) {
@@ -175,6 +176,12 @@ this.severityCounts_2 = [
   { label: 'CRITICAL', value: critical_2 },
 ];
 
+const points = ['0h', '4h', '8h', '12h', '16h', '20h', '24h'];
+this.timeline = points.map(p => ({
+  label: p,
+  value: Math.floor(10 + rnd() * 85), // 10..95
+}));
+
 
   }
 
@@ -204,5 +211,18 @@ this.severityCounts_2 = [
   get selectedTimeLabel(): string {
   return this.timeOptions.find(t => t.value === this.selectedTime)?.label ?? '';
 }
+
+get timelinePoints(): string {
+  if (!this.timeline?.length) return '';
+  const n = this.timeline.length;
+  return this.timeline
+    .map((p, i) => {
+      const x = (i / (n - 1)) * 100;
+      const y = 100 - p.value; // SVG y is inverted
+      return `${x},${y}`;
+    })
+    .join(' ');
+}
+
 
 }

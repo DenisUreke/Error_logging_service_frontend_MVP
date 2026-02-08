@@ -281,3 +281,58 @@
   font-weight: 900;
   font-size: 14px;
 }
+
+.timeline {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.timeline__title {
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  opacity: 0.85;
+}
+
+.timeline__chart {
+  position: relative;
+  height: 140px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.03);
+  overflow: hidden;
+}
+
+/* the connecting line */
+.timeline__svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.9;
+}
+
+/* dots */
+.timeline__dot {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  transform: translate(-50%, 50%);
+  background: currentColor;
+  box-shadow: 0 0 0 3px rgba(255,255,255,0.08);
+}
+
+/* labels row */
+.timeline__labels {
+  margin-top: 8px;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+.timeline__label {
+  text-align: center;
+}

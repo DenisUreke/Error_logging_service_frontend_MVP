@@ -70,6 +70,27 @@
                     </div>
                 </div>
 
+                <div class="timeline">
+                    <div class="timeline__title">Trend (timeline)</div>
+
+                    <div class="timeline__chart">
+                        <div class="timeline__dot" *ngFor="let p of timeline"
+                            [style.left.%]="(timeline.indexOf(p) / (timeline.length - 1)) * 100"
+                            [style.bottom.%]="p.value" [attr.aria-label]="p.label + ' ' + p.value"
+                            title="{{ p.label }}: {{ p.value }}"></div>
+
+                        <svg class="timeline__svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+                            <polyline [attr.points]="timelinePoints" fill="none" stroke="currentColor" stroke-width="2">
+                            </polyline>
+                        </svg>
+                    </div>
+
+                    <div class="timeline__labels">
+                        <div class="timeline__label" *ngFor="let p of timeline">{{ p.label }}</div>
+                    </div>
+                </div>
+
+
             </div>
         </div>
 
